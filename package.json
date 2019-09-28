@@ -1,5 +1,5 @@
 {
-  "name": "scrobble-lambda",
+  "name": "serverless-scrobbler",
   "version": "1.0.0",
   "description": "",
   "main": "scrobbler.js",
