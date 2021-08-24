@@ -31,13 +31,14 @@ function processTrackData({ album, tracks }) {
     if (!track.title) return;
 
     const artist = track.artist || album.artist;
+    const albumArtist = album.artist || track.artist;
     const albumTitle = track.album || album.album;
 
     var duration = track.duration.split(':');
     duration = duration.length === 1 ? parseInt(duration[0]) : parseInt(duration[0]) * 60 + parseInt(duration[1]);
 
     trackData[`artist[${index}]`] = artist;
-    trackData[`albumArtist[${index}]`] = artist;
+    trackData[`albumArtist[${index}]`] = albumArtist;
     trackData[`album[${index}]`] = albumTitle;
     trackData[`track[${index}]`] = track.title;
     trackData[`duration[${index}]`] = duration;
