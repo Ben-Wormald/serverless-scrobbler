@@ -1,17 +1,19 @@
 {
   "name": "serverless-scrobbler",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
-  "main": "scrobbler.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Ben Wormald",
+  "author": "Ben-Wormald",
   "license": "ISC",
+  "main": "src/scrobbler.js",
+  "scripts": {
+    "test": "tap"
+  },
   "dependencies": {
+    "got": "^11.8.2",
     "js-md5": "^0.7.3",
-    "querystring": "^0.2.0",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "query-string": "^7.0.1"
+  },
+  "devDependencies": {
+    "tap": "^15.0.9"
   }
 }
