@@ -2,20 +2,18 @@ service: serverless-scrobbler
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs14.x
   region: eu-west-1
 
 package:
-  include:
-    - scrobbler.js
+  patterns:
+    - handler.js
+    - src/**
     - node_modules/**
-  exclude:
-    - package.json
-    - package-lock.json
 
 functions:
   scrobble:
-    handler: scrobbler.scrobble
+    handler: handler.handler
     events:
       - http:
           method: post
