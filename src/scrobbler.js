@@ -1,9 +1,8 @@
 const got = require('got');
 const md5 = require('js-md5');
-const queryString = require('query-string');
+const logger = require('./logger');
 
 const dropInvalidDurations = process.env.DROP_INVALID_DURATIONS === 'true';
-const isLoggingEnabled = process.env.ENABLE_LOGGING === 'true';
 
 const processDurations = (data, count) => {
   const currentTime = Math.floor((new Date()).getTime() / 1000);
@@ -23,26 +22,25 @@ const processDurations = (data, count) => {
 
 const processTrackData = ({ album, tracks }) => {
   const trackData = {};
+  let count = 0
 
-  const validTracks = tracks.filter(track => !!track.title);
+  tracks
+    .filter(({ title, duration}) => title && duration)
+    .forEach((track, index) => {
+      var duration = track.duration.split(':');
+      duration = duration.length === 1 ? parseInt(duration[0]) : parseInt(duration[0]) * 60 + parseInt(duration[1]);
 
-  validTracks.forEach((track, index) => {
-    const artist = track.artist || album.artist;
-    const albumArtist = album.artist || track.artist;
-    const albumTitle = track.album || album.album;
+      trackData[`artist[${index}]`] = track.artist || album.artist;
+      trackData[`albumArtist[${index}]`] = album.artist;
+      trackData[`album[${index}]`] = album.album;
+      trackData[`track[${index}]`] = track.title;
+      trackData[`duration[${index}]`] = duration;
+      trackData[`trackNumber[${index}]`] = index + 1;
 
-    var duration = track.duration.split(':');
-    duration = duration.length === 1 ? parseInt(duration[0]) : parseInt(duration[0]) * 60 + parseInt(duration[1]);
+      count++;
+    });
 
-    trackData[`artist[${index}]`] = artist;
-    trackData[`albumArtist[${index}]`] = albumArtist;
-    trackData[`album[${index}]`] = albumTitle;
-    trackData[`track[${index}]`] = track.title;
-    trackData[`duration[${index}]`] = duration;
-    trackData[`trackNumber[${index}]`] = index + 1;
-  });
-
-  return processDurations(trackData, validTracks.length);
+  return processDurations(trackData, count);
 };
 
 const generateSignature = (data) => {
@@ -63,9 +61,7 @@ const processResponse = ({ scrobbles }) => {
   };
 
   if (scrobbles['@attr'].ignored) {
-    if (isLoggingEnabled) {
-      console.log(scrobbles['@attr'].ignored + ' scrobbles ignored:');
-    }
+    logger.log(scrobbles['@attr'].ignored + ' scrobbles ignored:');
 
     scrobbles.scrobble.forEach(({ track, ignoredMessage }) => {
       if (ignoredMessage.code) {
@@ -73,9 +69,8 @@ const processResponse = ({ scrobbles }) => {
           track: track['#text'],
           message: ignoredMessage['#text']
         });
-        if (isLoggingEnabled) {
-          console.log('  ' + track['#text'] + ': ' + ignoredMessage['#text']);
-        }
+
+        logger.log('  ' + track['#text'] + ': ' + ignoredMessage['#text']);
       }
     });
   }
@@ -91,7 +86,7 @@ const scrobble = async (rawData) => {
   trackData.format = 'json';
   trackData.api_sig = generateSignature(trackData);
 
-  const body = queryString.stringify(trackData);
+  const body = new URLSearchParams(trackData).toString();
 
   const response = await got.post(
     'http://ws.audioscrobbler.com/2.0/',
@@ -103,4 +98,6 @@ const scrobble = async (rawData) => {
 
 module.exports = {
   scrobble,
+  processTrackData,
+  generateSignature,
 };

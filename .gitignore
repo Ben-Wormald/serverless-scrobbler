@@ -1,2 +1,3 @@
 node_modules
 .serverless
+.nyc_output

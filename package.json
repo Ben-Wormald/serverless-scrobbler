@@ -6,12 +6,11 @@
   "license": "ISC",
   "main": "src/scrobbler.js",
   "scripts": {
-    "test": "tap"
+    "test": "tap --no-coverage"
   },
   "dependencies": {
     "got": "^11.8.2",
-    "js-md5": "^0.7.3",
-    "query-string": "^7.0.1"
+    "js-md5": "^0.7.3"
   },
   "devDependencies": {
     "tap": "^15.0.9"
