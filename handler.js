@@ -1,7 +1,6 @@
-const { scrobble } = require('./scrobbler');
+const { scrobble } = require('./src/scrobbler');
 
 const handler = async (event) => {
-  console.log('event', event);
   const data = JSON.parse(event.body);
   const response = await scrobble(data);
 
