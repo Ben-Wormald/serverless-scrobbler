@@ -9,7 +9,7 @@
     "test": "tap --no-coverage"
   },
   "dependencies": {
-    "got": "^11.8.2",
+    "got": "^11.8.5",
     "js-md5": "^0.7.3"
   },
   "devDependencies": {
