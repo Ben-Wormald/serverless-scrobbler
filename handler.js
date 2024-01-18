@@ -1,4 +1,4 @@
-const { scrobble } = require('./src/scrobbler');
+import { scrobble } from './src/scrobbler.js';
 
 const handler = async (event) => {
   const data = JSON.parse(event.body);
@@ -13,6 +13,6 @@ const handler = async (event) => {
   };
 };
 
-module.exports = {
+export {
   handler,
 };

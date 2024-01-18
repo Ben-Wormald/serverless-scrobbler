@@ -2,7 +2,7 @@ service: serverless-scrobbler
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   region: eu-west-1
 
 package:
@@ -22,3 +22,6 @@ functions:
     environment:
       DROP_INVALID_DURATIONS: false
       ENABLE_LOGGING: false
+      API_KEY: ${env:API_KEY}
+      SECRET_KEY: ${env:SECRET_KEY}
+      SESSION_KEY: ${env:SESSION_KEY}

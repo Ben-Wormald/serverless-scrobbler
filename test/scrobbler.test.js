@@ -1,5 +1,5 @@
-const tap = require('tap')
-const { processTrackData, generateSignature } = require('../src/scrobbler');
+import tap from 'tap';
+import { processTrackData, generateSignature } from '../src/scrobbler.js';
 
 tap.test('processTrackData', async t => {
   t.test('generates the right properties for a standard album', async t => {

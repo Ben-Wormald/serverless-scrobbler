@@ -1,4 +1,4 @@
-const { scrobble } = require('./src/scrobbler');
+import { scrobble } from './src/scrobbler.js';
 
 const data = {
   album: {

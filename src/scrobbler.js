@@ -1,6 +1,5 @@
-const got = require('got');
-const md5 = require('js-md5');
-const logger = require('./logger');
+import md5 from 'js-md5';
+import logger from './logger.js';
 
 const dropInvalidDurations = process.env.DROP_INVALID_DURATIONS === 'true';
 
@@ -88,15 +87,13 @@ const scrobble = async (rawData) => {
 
   const body = new URLSearchParams(trackData).toString();
 
-  const response = await got.post(
-    'http://ws.audioscrobbler.com/2.0/',
-    { body },
-  );
+  const response = await fetch('http://ws.audioscrobbler.com/2.0/', { method: 'POST', body });
+  const json = await response.json();
 
-  return processResponse(JSON.parse(response.body));
+  return processResponse(json);
 };
 
-module.exports = {
+export {
   scrobble,
   processTrackData,
   generateSignature,

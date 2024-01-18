@@ -4,8 +4,10 @@ const log = isLoggingEnabled ? console.log : () => {};
 const warn = isLoggingEnabled ? console.warn : () => {};
 const error = isLoggingEnabled ? console.error : () => {};
 
-module.exports = {
+const logger = {
   log,
   warn,
   error,
 };
+
+export default logger;
